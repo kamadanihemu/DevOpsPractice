@@ -1,7 +1,9 @@
 name: DotnetProject
-on: [push,workflow_dispatch]
-  jobs:
+on: push
+jobs:
+ dotnetdeployment:
    runs-on: self-hosted
    steps:
      - name: build
        run: echo "running .net project build"
+

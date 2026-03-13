@@ -1,12 +1,21 @@
 name: DotnetProject
-on: [push,workflow_dispatch]
+on:
+  workflow_dispatch:
+    inputs:
+      username:
+        description: "Enter database username"
+        required: true
+        default: appuser
+        type: string
+   
 jobs:
  dotnetdeployment:
    runs-on: self-hosted
    environment: dev
    env:
     DB_NAME: ${{vars.DB}}
-    DB_USER: ${{vars.USER}}
+    DB_USER: ${{ github.event.inputs.username }}
+#    DB_USER: ${{vars.USER}}
     DB_PASSWORD: ${{secrets.DB_PASSWORD}}
    
    steps:

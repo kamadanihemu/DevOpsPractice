@@ -1,5 +1,5 @@
 name: DotnetProject
-on: push
+on: [push,workflow_dispatch]
 jobs:
  dotnetdeployment:
    runs-on: self-hosted
@@ -12,6 +12,7 @@ jobs:
        run:  pwd
      - name: docker compose
        run: docker compose -f docker-compose.yml up -d      
+
 
 
 

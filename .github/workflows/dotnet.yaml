@@ -18,10 +18,13 @@ jobs:
        run:  pwd
      - name: docker compose down
        run: docker compose -f docker-compose.yml down
+     - name: docker remove volume Remove
+       run: docker volume remove devopspractice_pgdata
      - name: Remove images
        run: docker rmi $(docker images -q)
      - name: docker compose down
        run: docker compose -f docker-compose.yml up -d  
+
 
 
 

@@ -11,7 +11,7 @@ jobs:
      - name: workingdir
        run:  pwd
      - name: docker compose
-       run: docker compose up -d -f docker-compose.yml
-      
+       run: docker compose -f docker-compose.yml up -d      
+
 
 

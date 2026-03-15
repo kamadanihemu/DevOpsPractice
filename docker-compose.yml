@@ -9,6 +9,7 @@ services:
       - pgdata:/var/lib/postgresql/data
 
   backend:
+    image: java/backend:${1:-latest}
     build:
       context: .
       dockerfile: backend/Dockerfile
@@ -22,6 +23,7 @@ services:
       - db
 
   frontend:
+    image: java/frontend:${2:-latest}
     build:
       context: .
       dockerfile: frontend/Dockerfile

@@ -31,7 +31,7 @@ jobs:
        continue-on-error: true
        run: docker volume remove devopspractice_pgdata
      - name: Remove images
-       run: docker rmi $(docker images -q)
+       run: docker rmi -f $(docker images -q)
      - name: docker compose down
        run: docker compose -f docker-compose.yml up -d  
 

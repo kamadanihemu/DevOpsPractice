@@ -1,13 +1,19 @@
-# .NET 3-tier (ASP.NET Core Minimal API + Nginx + Postgres)
+# Java 3-tier (Spring Boot + Nginx + Postgres)
 
 ## Run on Ubuntu
 ```bash
-cd dotnet-3tier-postgres
+cd java-3tier-postgres
 cp .env.example .env
 docker compose up -d --build
+docker compose ps
 ```
 
 Open: http://localhost:8080
+
+Stop:
+```bash
+docker compose down
+```
 
 
 ## Docker concepts used here

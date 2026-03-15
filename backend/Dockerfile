@@ -1,14 +1,16 @@
 # -------- Stage 1: build --------
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR /src
-COPY backend/*.csproj backend/
-RUN dotnet restore backend/backend.csproj
-COPY backend/ backend/
-RUN dotnet publish backend/backend.csproj -c Release -o /out --no-restore
+FROM maven:3.9.9-eclipse-temurin-17 AS build
+WORKDIR /app
+COPY pom.xml .
+RUN mvn -B -DskipTests dependency:go-offline
+COPY src ./src
+RUN mvn -B -DskipTests clean package
 
 # -------- Stage 2: runtime --------
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
+FROM eclipse-temurin:17-jre
 WORKDIR /app
-COPY --from=build /out ./
+RUN useradd -m appuser
+USER appuser
+COPY --from=build /app/target/*.jar /app/app.jar
 EXPOSE 8080
-ENTRYPOINT ["dotnet","backend.dll"]
+ENTRYPOINT ["java","-jar","/app/app.jar"]

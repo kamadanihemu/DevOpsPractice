@@ -7,6 +7,11 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD:-apppass}
     volumes:
       - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-appuser} -d ${DB_NAME:-appdb}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
 
   backend:
     build:
@@ -19,16 +24,23 @@ services:
       DB_USER: ${DB_USER:-appuser}
       DB_PASSWORD: ${DB_PASSWORD:-apppass}
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/api/healthz >/dev/null 2>&1 || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
 
   frontend:
     build:
       context: .
       dockerfile: frontend/Dockerfile
     ports:
-      - "8081:80"
+      - "8082:80"
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
 
 volumes:
   pgdata:

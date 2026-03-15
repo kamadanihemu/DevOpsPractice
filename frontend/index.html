@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>3-tier DevOps Practice</title>
+  <style>
+    body{font-family:Arial, sans-serif; margin:40px;}
+    code{background:#f2f2f2; padding:2px 6px; border-radius:6px;}
+    .box{padding:14px; border:1px solid #ddd; border-radius:10px; margin-top:14px;}
+    input{padding:8px; width:280px;}
+    button{padding:8px 12px;}
+  </style>
+</head>
+<body>
+  <h2>3-tier DevOps Practice Python(Frontend → Backend → Postgres)</h2>
+  <p>This UI calls <code>/api/items</code> through Nginx reverse proxy.</p>
+
+  <div class="box">
+    <button onclick="loadItems()">Load items</button>
+    <pre id="out">Click "Load items"</pre>
+  </div>
+
+  <div class="box">
+    <h3>Add item</h3>
+    <input id="name" placeholder="Type item name..." />
+    <button onclick="addItem()">Add</button>
+  </div>
+
+<script>
+async function loadItems(){
+  const res = await fetch('/api/items');
+  const data = await res.json();
+  document.getElementById('out').textContent = JSON.stringify(data, null, 2);
+}
+async function addItem(){
+  const name = document.getElementById('name').value || "Unnamed";
+  await fetch('/api/items', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({name})});
+  await loadItems();
+}
+</script>
+</body>
+</html>
